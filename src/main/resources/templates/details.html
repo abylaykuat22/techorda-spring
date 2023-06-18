@@ -1,0 +1,80 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/main.html">
+<div layout:fragment="content">
+  <div class="col-6 mx-auto">
+    ID: <span th:text="${item.id}"></span>
+    <br>
+    NAME: <span th:text="${item.name}"></span>
+    <br>
+    DESCRIPTION: <span th:text="${item.description}"></span>
+    <br>
+    Price: <span th:text="${item.price}"></span>
+    <br>
+    Brand: <span th:text="${item.brand.getName() +' – '+item.brand.shortName}"></span>
+  </div>
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editItem">
+    EDIT ITEM
+  </button>
+
+  <!-- Modal -->
+  <form action="/editItem" method="post">
+    <div class="modal fade" id="editItem" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="id" th:value="${item.getId()}">
+            <div class="row mt-2">
+              <div class="col-6">
+                NAME:
+              </div>
+              <div class="col-6">
+                <input type="text" class="form-control" th:value="${item.getName()}" name="name">
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-6">
+                DESCRIPTION:
+              </div>
+              <div class="col-6">
+                <input type="text" class="form-control" th:value="${item.getDescription()}" name="description">
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-6">
+                PRICE:
+              </div>
+              <div class="col-6">
+                <input type="number" class="form-control" th:value="${item.getPrice()}" name="price">
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-6">
+                BRAND:
+              </div>
+              <div class="col-6">
+                <select name="brand.id" class="form-select">
+                  <option th:each="brand : ${brands}"
+                          th:selected="${item.brand.id == brand.id}"
+                          th:value="${brand.id}"
+                          th:text="${brand.getName() +' – '+brand.shortName}"
+                  ></option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success">SAVE CHANGES</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+</html>

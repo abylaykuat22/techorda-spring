@@ -1,0 +1,48 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/main.html">
+<div layout:fragment="content">
+  <div class="col-6 mx-auto">
+    ID: <span th:text="${brand.id}"></span>
+    <br>
+    NAME: <span th:text="${brand.name}"></span>
+    <br>
+    SHORT NAME: <span th:text="${brand.shortName}"></span>
+    <br><br>
+
+
+    <form th:action="@{'/addProductToBrand'}" method="post">
+      <input type="hidden" name="brand_id" th:value="${brand.id}">
+      <select name="product_id" class="form-select">
+        <option th:each="product : ${products}"
+          th:text="${product.name}"
+          th:value="${product.id}"
+        ></option>
+      </select>
+      <button class="btn btn-primary">ADD PRODUCT</button>
+    </form>
+    <table class="table table-striped">
+      <thead>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>DESCRIPTION</th>
+        <th>DELETE</th>
+      </thead>
+      <tbody>
+        <tr th:each="product : ${brand.products}">
+          <td th:text="${product.id}"></td>
+          <td th:text="${product.name}"></td>
+          <td th:text="${product.description}"></td>
+          <td>
+            <form action="/deleteProduct" method="post">
+              <input type="hidden" th:value="${product.id}" name="product_id">
+              <input type="hidden" th:value="${brand.id}" name="brand_id">
+              <button class="btn btn-danger">DELETE</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</html>
